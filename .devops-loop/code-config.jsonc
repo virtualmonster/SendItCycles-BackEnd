@@ -1,0 +1,17 @@
+{
+  "code-genie": {
+    "pull-request": {
+      "dev-container": "TrivyScan",
+      "custom-commands": [
+        {
+          "run-trivy": "cp /opt/run-trivy.sh /usr/code/ && \
+                        chmod +x /usr/code/run-trivy.sh && \
+                        REPO_URL=https://${platform-fqdm}/control/${repo-owner}/${repo}/src/branch/${pr-branch}/ \
+                        /usr/code/run-trivy.sh ${code-folder} ${result-json} \
+                        --reject=high \
+                        --trivyArgs=\"--scanners vuln,misconfig,secret,license --license-full --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL\""
+        }
+      ]
+    }
+  }
+}
