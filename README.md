@@ -33,10 +33,6 @@ git clone https://github.com/virtualmonster/SendItCycles-BackEnd.git server
 docker compose up --build
 ```
 
-### If You Already Cloned This Repo Elsewhere
-
-Move this repo into `infra\server` (or re-clone it there) before running compose.
-
 ---
 
 ## Start Here (Recommended)
