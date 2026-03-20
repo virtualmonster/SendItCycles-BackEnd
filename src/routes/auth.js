@@ -2,6 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import pool from '../models/db.js';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'senditcycles-local-dev-secret';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || process.env.JWT_EXPIRE || '24h';
+
 export async function register(req, res) {
   const { email, password, first_name, last_name } = req.body;
 
@@ -19,8 +22,8 @@ export async function register(req, res) {
 
     const token = jwt.sign(
       { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE || '24h' }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     res.status(201).json({
@@ -60,8 +63,8 @@ export async function login(req, res) {
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE || '24h' }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     res.json({

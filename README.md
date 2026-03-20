@@ -41,10 +41,10 @@ Use this only when you are developing backend code in isolation.
 npm install
 
 # Windows (PowerShell)
-$env:USE_SQLITE="true"; $env:JWT_SECRET="local-dev-secret"; node src/index.js
+$env:USE_SQLITE="true"; node src/index.js
 
 # Linux / macOS
-USE_SQLITE=true JWT_SECRET=local-dev-secret node src/index.js
+USE_SQLITE=true node src/index.js
 ```
 
 ### PostgreSQL mode
@@ -56,12 +56,11 @@ npm install
 $env:USE_SQLITE="false"
 $env:DB_HOST="localhost"; $env:DB_PORT="5432"
 $env:DB_NAME="senditcycles"; $env:DB_USER="sendit"; $env:DB_PASSWORD="yourpassword"
-$env:JWT_SECRET="your-secret"
 node src/index.js
 
 # Linux / macOS
 USE_SQLITE=false DB_HOST=localhost DB_PORT=5432 DB_NAME=senditcycles \
-  DB_USER=sendit DB_PASSWORD=yourpassword JWT_SECRET=your-secret node src/index.js
+  DB_USER=sendit DB_PASSWORD=yourpassword node src/index.js
 ```
 
 Create schema/seed for PostgreSQL first:
