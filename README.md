@@ -40,7 +40,6 @@ docker compose up --build
 Use the Infra repo to start the full app (frontend + backend + database):
 
 - Infra quick start: `README.md`
-- Infra deployment script: `scripts/deploy.sh`
 
 ## API Docs
 
