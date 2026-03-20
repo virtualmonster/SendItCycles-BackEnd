@@ -13,9 +13,10 @@ Start with Infra first, then clone this repo into the exact folder expected by D
 Required local layout:
 
 ```text
-C:\SendItCycles\infra\
-  client\   <- SendItCycles-FrontEnd
-  server\   <- this repository (SendItCycles-BackEnd)
+C:\SendItCycles\
+  SendItCycles-Infra\
+  SendItCycles-FrontEnd\
+  SendItCycles-BackEnd\   <- this repository
 ```
 
 ### Fast Setup (PowerShell)
@@ -24,12 +25,12 @@ C:\SendItCycles\infra\
 mkdir C:\SendItCycles
 cd C:\SendItCycles
 
-git clone https://github.com/virtualmonster/SendItCycles-Infra.git infra
-cd infra
-git clone https://github.com/virtualmonster/SendItCycles-FrontEnd.git client
-git clone https://github.com/virtualmonster/SendItCycles-BackEnd.git server
+git clone https://github.com/virtualmonster/SendItCycles-Infra.git SendItCycles-Infra
+git clone https://github.com/virtualmonster/SendItCycles-FrontEnd.git SendItCycles-FrontEnd
+git clone https://github.com/virtualmonster/SendItCycles-BackEnd.git SendItCycles-BackEnd
 
 # Start app (SQLite default)
+cd SendItCycles-Infra
 docker compose up --build
 ```
 
