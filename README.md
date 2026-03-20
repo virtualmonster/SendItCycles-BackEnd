@@ -1,24 +1,41 @@
 # SendIt Cycles — Backend API
 
-Node.js/Express REST API for **SendIt Cycles**. Supports two database backends: **SQLite** for zero-config local development and demos, or **PostgreSQL** for production deployments.
+Node.js/Express REST API for **SendIt Cycles**.
 
-## What is SendIt Cycles?
+## Start Here (Recommended)
 
-SendIt Cycles is a full-stack mountain bike e-commerce platform. This API provides endpoints for product browsing, user authentication, cart and order management, and an admin interface. Full API documentation is served via Swagger UI at `/api-docs` when the server is running.
+Most users should start the full app through the Infra repo, not by running this backend repo directly.
 
-## Tech Stack
+- Infra repo: https://github.com/virtualmonster/SendItCycles-Infra
+- Infra quick start: `README.md`
+- Infra deployment script: `scripts/deploy.sh`
 
-- **Node.js 18** + **Express 4**
-- **SQLite** (via `better-sqlite3`) — default, no setup required
-- **PostgreSQL 15** (via `pg`) — for production
-- **JWT** authentication with **bcrypt** password hashing
-- **Swagger / OpenAPI** docs at `/api-docs`
+SendIt Cycles is a 3-repo setup:
 
----
+1. `SendItCycles-FrontEnd`
+2. `SendItCycles-BackEnd` (this repo)
+3. `SendItCycles-Infra` (entry point for Compose/scripts)
 
-## Running Locally
+If you just want to run the platform, use Infra first.
 
-### Option 1 — SQLite (recommended for local dev, no database needed)
+## API Docs
+
+When the stack is running, API docs are at:
+
+- `http://localhost:5000/api-docs`
+
+## Default Admin Account
+
+Seeded account:
+
+- Email: `admin@senditcycles.com`
+- Password: `admin123`
+
+## Local Backend-Only Dev (Optional)
+
+Use this only when you are developing backend code in isolation.
+
+### SQLite mode
 
 ```bash
 npm install
@@ -30,11 +47,7 @@ $env:USE_SQLITE="true"; $env:JWT_SECRET="local-dev-secret"; node src/index.js
 USE_SQLITE=true JWT_SECRET=local-dev-secret node src/index.js
 ```
 
-The database file is created automatically at `./data/senditcycles.db` (or wherever `SQLITE_PATH` points). The schema and seed data are applied on first start.
-
-### Option 2 — PostgreSQL
-
-Start a PostgreSQL instance, then:
+### PostgreSQL mode
 
 ```bash
 npm install
@@ -51,41 +64,11 @@ USE_SQLITE=false DB_HOST=localhost DB_PORT=5432 DB_NAME=senditcycles \
   DB_USER=sendit DB_PASSWORD=yourpassword JWT_SECRET=your-secret node src/index.js
 ```
 
-Create the schema manually before first start:
+Create schema/seed for PostgreSQL first:
 
 ```bash
 psql -U sendit -d senditcycles -f database/init-postgres.sql
 ```
-
-### Using a .env file (either backend)
-
-Create a `.env` file in the repo root:
-
-```env
-# --- SQLite mode ---
-USE_SQLITE=true
-SQLITE_PATH=./data/senditcycles.db
-JWT_SECRET=local-dev-secret
-PORT=5000
-
-# --- PostgreSQL mode (replace above with these) ---
-# USE_SQLITE=false
-# DB_HOST=localhost
-# DB_PORT=5432
-# DB_NAME=senditcycles
-# DB_USER=sendit
-# DB_PASSWORD=yourpassword
-# JWT_SECRET=your-secret
-# PORT=5000
-```
-
-Then:
-
-```bash
-node src/index.js
-```
-
----
 
 ## Environment Variables
 
@@ -93,60 +76,11 @@ node src/index.js
 |----------|---------|-------------|
 | `PORT` | `5000` | Server port |
 | `USE_SQLITE` | `false` | Set to `true` to use SQLite |
-| `SQLITE_PATH` | `/data/senditcycles.db` | Path to SQLite database file |
+| `SQLITE_PATH` | `/data/senditcycles.db` | SQLite database file |
 | `DB_HOST` | — | PostgreSQL host |
 | `DB_PORT` | `5432` | PostgreSQL port |
 | `DB_NAME` | — | PostgreSQL database name |
 | `DB_USER` | — | PostgreSQL username |
 | `DB_PASSWORD` | — | PostgreSQL password |
-| `JWT_SECRET` | — | Secret used to sign JWT tokens |
+| `JWT_SECRET` | — | JWT signing secret |
 | `JWT_EXPIRES_IN` | `24h` | Token expiry |
-
----
-
-## Default Accounts (seed data)
-
-On first start with SQLite (or after running `init.sql` on PostgreSQL), the following accounts are created:
-
-| Email | Password | Role |
-|-------|----------|------|
-| `admin@senditcycles.com` | `admin123` | admin |
-
----
-
-## API Overview
-
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| `GET` | `/api/health` | — | Health check |
-| `POST` | `/api/auth/register` | — | Create account |
-| `POST` | `/api/auth/login` | — | Get JWT token |
-| `GET` | `/api/categories` | — | List categories |
-| `GET` | `/api/products` | — | List all products |
-| `GET` | `/api/products/:id` | — | Product detail |
-| `POST` | `/api/orders` | User | Place order |
-| `GET` | `/api/orders` | User | My orders |
-| `GET` | `/api-docs` | — | Swagger UI |
-
-Full documentation available at **http://localhost:5000/api-docs**.
-
----
-
-## Docker
-
-```bash
-# SQLite (no external database needed)
-docker build -t senditcycles-backend .
-docker run -p 5000:5000 -e USE_SQLITE=true -e JWT_SECRET=secret \
-  -v senditcycles_data:/data senditcycles-backend
-
-# PostgreSQL
-docker run -p 5000:5000 \
-  -e USE_SQLITE=false \
-  -e DB_HOST=your-db-host \
-  -e DB_NAME=senditcycles \
-  -e DB_USER=sendit \
-  -e DB_PASSWORD=yourpassword \
-  -e JWT_SECRET=your-secret \
-  senditcycles-backend
-```
