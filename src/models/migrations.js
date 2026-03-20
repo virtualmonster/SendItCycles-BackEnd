@@ -2,9 +2,9 @@ import pool from './db.js';
 
 export async function runMigrations() {
   try {
-    // Skip if not using SQLite (PostgreSQL handles this differently)
-    const dbType = process.env.DB_TYPE || 'sqlite';
-    if (dbType !== 'sqlite') {
+    // Skip in PostgreSQL mode; this migration logic is SQLite-specific.
+    const useSqlite = process.env.USE_SQLITE === 'true';
+    if (!useSqlite) {
       console.log('✓ Skipping migrations (not SQLite)');
       return;
     }

@@ -15,7 +15,7 @@ export async function getProductsByCategory(req, res) {
   try {
     const result = await pool.query(
       `SELECT p.id, p.category_id, p.name, p.description, p.price, p.stock_quantity, p.image_url, p.created_at, p.updated_at 
-       FROM products WHERE category_id = $1 ORDER BY name`,
+       FROM products p WHERE p.category_id = $1 ORDER BY p.name`,
       [categoryId]
     );
     res.json(result.rows);
