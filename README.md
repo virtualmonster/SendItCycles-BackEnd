@@ -2,21 +2,49 @@
 
 Node.js/Express REST API for **SendIt Cycles**.
 
-## Start Here (Recommended)
+## Stop: Read This First
 
-Most users should start the full app through the Infra repo, not by running this backend repo directly.
+Most users should not clone/run this repo by itself.
+
+Start with Infra first, then clone this repo into the exact folder expected by Docker Compose.
 
 - Infra repo: https://github.com/virtualmonster/SendItCycles-Infra
+
+Required local layout:
+
+```text
+C:\SendItCycles\infra\
+  client\   <- SendItCycles-FrontEnd
+  server\   <- this repository (SendItCycles-BackEnd)
+```
+
+### Fast Setup (PowerShell)
+
+```powershell
+mkdir C:\SendItCycles
+cd C:\SendItCycles
+
+git clone https://github.com/virtualmonster/SendItCycles-Infra.git infra
+cd infra
+git clone https://github.com/virtualmonster/SendItCycles-FrontEnd.git client
+git clone https://github.com/virtualmonster/SendItCycles-BackEnd.git server
+
+# Start app (SQLite default)
+docker compose up --build
+```
+
+### If You Already Cloned This Repo Elsewhere
+
+Move this repo into `infra\server` (or re-clone it there) before running compose.
+
+---
+
+## Start Here (Recommended)
+
+Use the Infra repo to start the full app (frontend + backend + database):
+
 - Infra quick start: `README.md`
 - Infra deployment script: `scripts/deploy.sh`
-
-SendIt Cycles is a 3-repo setup:
-
-1. `SendItCycles-FrontEnd`
-2. `SendItCycles-BackEnd` (this repo)
-3. `SendItCycles-Infra` (entry point for Compose/scripts)
-
-If you just want to run the platform, use Infra first.
 
 ## API Docs
 
